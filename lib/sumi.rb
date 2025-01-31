@@ -66,6 +66,8 @@ module Sumi
 			%(Pathname("#{object.to_path}"))
 		when Date, DateTime, Time
 			%(#{object.class.name}("#{object}"))
+		when Exception
+			%(#{object.class.name}("#{object.message}"))
 		when Symbol, String, Integer, Float, Regexp, Range, Rational, Complex, true, false, nil
 			object.inspect
 		when defined?(Data) && Data
