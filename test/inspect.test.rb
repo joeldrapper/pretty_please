@@ -404,3 +404,30 @@ test "exception" do
 		ArgumentError("message")
 	RUBY
 end
+
+test "struct" do
+	customer = Struct.new(:name, :address) do
+		def self.name
+			"Customer"
+		end
+	end
+
+	assert_equal_ruby Sumi.inspect(customer.new("Dave", "123 Main")), <<~RUBY.chomp
+    Customer(
+      name: "Dave",
+      address: "123 Main",
+    )
+	RUBY
+end
+
+test "empty struct" do
+	empty = Struct.new do
+		def self.name
+			"Empty"
+		end
+	end
+
+	assert_equal_ruby Sumi.inspect(empty.new), <<~RUBY.chomp
+    Empty()
+	RUBY
+end
