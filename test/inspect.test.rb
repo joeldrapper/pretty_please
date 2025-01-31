@@ -15,7 +15,6 @@ test "object with no properties" do
 	assert_equal_ruby Sumi.inspect(Object.new), %(Object())
 end
 
-
 test "struct" do
 	customer = Struct.new(:name, :address) do
 		def self.name
