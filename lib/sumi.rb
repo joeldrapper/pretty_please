@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "sumi/version"
+require "set"
 
 module Sumi
 	def self.inspect(object, indent: 0, tab_width: 2, max_width: 60, max_depth: 5, max_instance_variables: 10, original_object: nil)
@@ -67,7 +68,7 @@ module Sumi
 			%(#{object.class.name}("#{object}"))
 		when Symbol, String, Integer, Float, Regexp, Range, Rational, Complex, true, false, nil
 			object.inspect
-		when Data
+		when defined?(Data) && Data
 			buffer = +""
 			members = object.members.take(max_instance_variables) # TODO: either rename max_instance_variables to max_properties or define a max_members specifcally for data objects
 			total_count = object.members.length

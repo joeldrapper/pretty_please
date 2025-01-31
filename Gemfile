@@ -7,10 +7,10 @@ gemspec
 
 group :test do
 	gem "quickdraw", github: "joeldrapper/quickdraw"
-	gem "simplecov", require: false
+	gem "simplecov", require: false, platform: :ruby
 end
 
 group :development do
-	gem "rubocop"
-	gem "ruby-lsp"
+	gem "rubocop", platform: :ruby
+	gem "ruby-lsp", platform: :ruby
 end

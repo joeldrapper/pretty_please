@@ -12,3 +12,4 @@ test/dummy/log/test.log
 vendor/cache/*
 .rubocop-*
 *.gem
+Gemfile.lock
