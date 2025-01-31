@@ -79,7 +79,7 @@ module Sumi
 			object.name
 		when Pathname, File
 			%(#{object.class.name}("#{object.to_path}"))
-		when MatchData, (defined?(Date) && Date), (defined?(DateTime) && DateTime), (defined?(Time) && Time)
+		when MatchData, (defined?(Date) && Date), (defined?(DateTime) && DateTime), (defined?(Time) && Time), (defined?(URI) && URI)
 			%(#{object.class.name}("#{object}"))
 		when Exception
 			%(#{object.class.name}("#{object.message}"))

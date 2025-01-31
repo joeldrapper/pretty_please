@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "set"
+require "uri"
 require "date"
 
 test "objects" do
@@ -145,6 +146,10 @@ end
 
 test "date" do
 	assert_equal_ruby Sumi.inspect(Date.parse("2015-01-31")), %(Date("2015-01-31"))
+end
+
+test "uri" do
+	assert_equal_ruby Sumi.inspect(URI.parse("https://example.com")), %(URI::HTTPS("https://example.com"))
 end
 
 test "date time" do
