@@ -68,7 +68,7 @@ module Sumi
 			%(#{object.class.name}("#{object}"))
 		when Symbol, String, Integer, Float, Regexp, Range, Rational, Complex, true, false, nil
 			object.inspect
-		when Data
+		when defined?(Data) && Data
 			buffer = +""
 			members = object.members.take(max_instance_variables) # TODO: either rename max_instance_variables to max_properties or define a max_members specifcally for data objects
 			total_count = object.members.length
