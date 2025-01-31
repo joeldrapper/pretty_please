@@ -1,4 +1,4 @@
-## Sumi - Pretty Print as valid Ruby
+## Sumi - Pretty Print Ruby objects as Ruby
 
 Sumi (墨) is a pretty-printing library for Ruby that formats objects in a readable and structured way.
 
