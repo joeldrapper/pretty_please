@@ -1,0 +1,11 @@
+inherit_from:
+  - "https://www.goodcop.style/tabs.yml"
+
+AllCops:
+  TargetRubyVersion: 3.1
+
+Security/Open:
+  Enabled: false
+
+Layout/HeredocIndentation:
+  Enabled: false
