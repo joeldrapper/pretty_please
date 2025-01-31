@@ -2,6 +2,6 @@
 # frozen_string_literal: true
 
 require "irb"
-require "phlex"
+require "sumi"
 
 IRB.start(__FILE__)
