@@ -86,7 +86,7 @@ module Sumi
 			object.inspect
 		when defined?(Date) && Date
 			%(#{object.class.name}("#{object}"))
-		when defined?(Data) && Data
+		when Struct, (defined?(Data) && Data)
 			buffer = +""
 			members = object.members.take(max_instance_variables) # TODO: either rename max_instance_variables to max_properties or define a max_members specifcally for data objects
 			total_count = object.members.length
