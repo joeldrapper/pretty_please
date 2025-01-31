@@ -73,12 +73,14 @@ module Sumi
 			object.name
 		when Pathname
 			%(Pathname("#{object.to_path}"))
-		when Date, DateTime, Time
+		when DateTime, Time
 			%(#{object.class.name}("#{object}"))
 		when Exception
 			%(#{object.class.name}("#{object.message}"))
 		when Symbol, String, Integer, Float, Regexp, Range, Rational, Complex, true, false, nil
 			object.inspect
+		when defined?(Date) && Date
+			%(#{object.class.name}("#{object}"))
 		when defined?(Data) && Data
 			buffer = +""
 			members = object.members.take(max_instance_variables) # TODO: either rename max_instance_variables to max_properties or define a max_members specifcally for data objects
