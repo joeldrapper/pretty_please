@@ -14,3 +14,5 @@ group :development do
 	gem "rubocop", platform: :ruby
 	gem "ruby-lsp", platform: :ruby
 end
+
+gem "dispersion", github: "joeldrapper/dispersion"

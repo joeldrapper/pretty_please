@@ -2,8 +2,13 @@
 
 require "sumi/version"
 require "set"
+require "dispersion"
 
 module Sumi
+	def self.print(object)
+		puts Dispersion.ansi(inspect(object))
+	end
+
 	def self.inspect(
 		object,
 		indent: 0,
