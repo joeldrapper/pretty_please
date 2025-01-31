@@ -5,8 +5,8 @@ require "date"
 test "objects" do
 	assert_equal_ruby Sumi.inspect(Example.new), <<~RUBY.chomp
 		Example(
-			@foo = 1,
-			@bar = [2, 3, 4],
+		  @foo = 1,
+		  @bar = [2, 3, 4],
 		)
 	RUBY
 end
@@ -25,8 +25,8 @@ if (Gem::Version.new(RUBY_VERSION) >= Gem::Version.new("3.2"))
 
 		assert_equal_ruby Sumi.inspect(measure.new(100, "km")), <<~RUBY.chomp
 			Measure(
-				amount: 100,
-				unit: "km",
+			  amount: 100,
+			  unit: "km",
 			)
 		RUBY
 	end
@@ -140,11 +140,11 @@ test "nested hashes" do
 
 	assert_equal_ruby Sumi.inspect(object), <<~RUBY.chomp
 		{
-			foo: {
-				bar: {
-					baz: 1,
-				},
-			},
+		  foo: {
+		    bar: {
+		      baz: 1,
+		    },
+		  },
 		}
 	RUBY
 end
@@ -153,7 +153,7 @@ test "nested arrays" do
 	object = [[1, 2], [3, 4]]
 
 	assert_equal_ruby Sumi.inspect(object), <<~RUBY.chomp
-		[[1, 2], [3, 4]]
+	  [[1, 2], [3, 4]]
 	RUBY
 end
 
@@ -211,59 +211,59 @@ test "long arrays" do
 		],
 	]
 
-	assert_equal_ruby Sumi.inspect(object), <<-RUBY.chomp
-[
-	"One",
-	"Two",
-	"Three",
-	"Four",
-	"Five",
-	"Six",
-	"Seven",
-	"Eight",
-	"Nine",
-	"Ten",
-	"Eleven",
-	"Twelve",
-	"Thirteen",
-	"Fourteen",
-	"Fifteen",
-	"Sixteen",
-	"Seventeen",
-	"Eighteen",
-	"Nineteen",
-	"Twenty",
-	["A", "B", "C"],
-	{
-		a: [1, 2, 3],
-		b: {
-			"c" => 1.3232332,
-			[1, 2, 3] => Set[1, 2, 3, 4],
-		},
-	},
-	[
-		"One",
-		"Two",
-		"Three",
-		"Four",
-		"Five",
-		"Six",
-		"Seven",
-		"Eight",
-		"Nine",
-		"Ten",
-		"Eleven",
-		"Twelve",
-		"Thirteen",
-		"Fourteen",
-		"Fifteen",
-		"Sixteen",
-		"Seventeen",
-		"Eighteen",
-		"Nineteen",
-		"Twenty",
-	],
-]
+	assert_equal_ruby Sumi.inspect(object), <<~RUBY.chomp
+		[
+		  "One",
+		  "Two",
+		  "Three",
+		  "Four",
+		  "Five",
+		  "Six",
+		  "Seven",
+		  "Eight",
+		  "Nine",
+		  "Ten",
+		  "Eleven",
+		  "Twelve",
+		  "Thirteen",
+		  "Fourteen",
+		  "Fifteen",
+		  "Sixteen",
+		  "Seventeen",
+		  "Eighteen",
+		  "Nineteen",
+		  "Twenty",
+		  ["A", "B", "C"],
+		  {
+		    a: [1, 2, 3],
+		    b: {
+		      "c" => 1.3232332,
+		      [1, 2, 3] => Set[1, 2, 3, 4],
+		    },
+		  },
+		  [
+		    "One",
+		    "Two",
+		    "Three",
+		    "Four",
+		    "Five",
+		    "Six",
+		    "Seven",
+		    "Eight",
+		    "Nine",
+		    "Ten",
+		    "Eleven",
+		    "Twelve",
+		    "Thirteen",
+		    "Fourteen",
+		    "Fifteen",
+		    "Sixteen",
+		    "Seventeen",
+		    "Eighteen",
+		    "Nineteen",
+		    "Twenty",
+		  ],
+		]
 	RUBY
 end
 
@@ -315,27 +315,27 @@ test "self-referencing" do
 	]
 
 	assert_equal_ruby Sumi.inspect(object), <<~RUBY.chomp
-		{
-			id: 1,
-			array: [1, 2, 3],
-			parent: {
-				object: self,
-				self_twice: [self, self],
-				children: [
-					self,
-					{
-						id: 2,
-						array: [3, 2, 1],
-						previous_sibling: self,
-					},
-				],
-			},
-			next_sibling: {
-				id: 2,
-				array: [3, 2, 1],
-				previous_sibling: self,
-			},
-		}
+	{
+	  id: 1,
+	  array: [1, 2, 3],
+	  parent: {
+	    object: self,
+	    self_twice: [self, self],
+	    children: [
+	      self,
+	      {
+	        id: 2,
+	        array: [3, 2, 1],
+	        previous_sibling: self,
+	      },
+	    ],
+	  },
+	  next_sibling: {
+	    id: 2,
+	    array: [3, 2, 1],
+	    previous_sibling: self,
+	  },
+	}
 	RUBY
 end
 
@@ -348,17 +348,17 @@ test "max_instance_variables" do
 
 	assert_equal_ruby Sumi.inspect(object), <<~RUBY.chomp
 		Object(
-			@variable_1 = 1,
-			@variable_2 = 2,
-			@variable_3 = 3,
-			@variable_4 = 4,
-			@variable_5 = 5,
-			@variable_6 = 6,
-			@variable_7 = 7,
-			@variable_8 = 8,
-			@variable_9 = 9,
-			@variable_10 = 10,
-			...
+		  @variable_1 = 1,
+		  @variable_2 = 2,
+		  @variable_3 = 3,
+		  @variable_4 = 4,
+		  @variable_5 = 5,
+		  @variable_6 = 6,
+		  @variable_7 = 7,
+		  @variable_8 = 8,
+		  @variable_9 = 9,
+		  @variable_10 = 10,
+		  ...
 		)
 	RUBY
 end
@@ -382,17 +382,17 @@ test "max_depth" do
 
 	assert_equal_ruby Sumi.inspect(object, max_width: 300), <<~RUBY.chomp
 		MaxDepth(
-			@value = [
-				"object",
-				MaxDepth(
-					@value = [
-						"level1",
-						MaxDepth(
-							...
-						),
-					],
-				),
-			],
+		  @value = [
+		    "object",
+		    MaxDepth(
+		      @value = [
+		        "level1",
+		        MaxDepth(
+		          ...
+		        ),
+		      ],
+		    ),
+		  ],
 		)
 	RUBY
 end

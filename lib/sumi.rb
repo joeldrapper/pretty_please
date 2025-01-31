@@ -16,7 +16,7 @@ module Sumi
 		return "self" if object && object == original_object
 
 		original_object ||= object
-		tab = "\t"
+		tab = " " * tab_width
 
 		case object
 		when Hash
