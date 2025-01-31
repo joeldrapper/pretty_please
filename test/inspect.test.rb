@@ -30,16 +30,16 @@ if (Gem::Version.new(RUBY_VERSION) >= Gem::Version.new("3.2"))
 			)
 		RUBY
 	end
-end
 
-test "data objects with no properties" do
-	empty = Data.define do
-		def self.name
-			"Empty"
+	test "data objects with no properties" do
+		empty = Data.define do
+			def self.name
+				"Empty"
+			end
 		end
-	end
 
-	assert_equal_ruby Sumi.inspect(empty.new), %(Empty())
+		assert_equal_ruby Sumi.inspect(empty.new), %(Empty())
+	end
 end
 
 test "empty set" do
