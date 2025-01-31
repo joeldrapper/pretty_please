@@ -15,19 +15,21 @@ test "object with no properties" do
 	assert_equal_ruby Sumi.inspect(Object.new), %(Object())
 end
 
-test "data objects" do
-	measure = Data.define(:amount, :unit) do
-		def self.name
-			"Measure"
+if (Gem::Version.new(RUBY_VERSION) >= Gem::Version.new("3.2"))
+	test "data objects" do
+		measure = Data.define(:amount, :unit) do
+			def self.name
+				"Measure"
+			end
 		end
-	end
 
-	assert_equal_ruby Sumi.inspect(measure.new(100, "km")), <<~RUBY.chomp
-		Measure(
-			amount: 100,
-			unit: "km",
-		)
-	RUBY
+		assert_equal_ruby Sumi.inspect(measure.new(100, "km")), <<~RUBY.chomp
+			Measure(
+				amount: 100,
+				unit: "km",
+			)
+		RUBY
+	end
 end
 
 test "data objects with no properties" do
