@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require "sumi/version"
-require "set"
 require "dispersion"
 
 module Sumi
@@ -59,7 +58,7 @@ module Sumi
 			else
 				"[#{items.join(', ')}]"
 			end
-		when Set
+		when defined?(Set) && Set
 			new_lines = false
 			length = 0
 			items = object.to_a.sort!.map do |item|
@@ -78,15 +77,13 @@ module Sumi
 			object.name
 		when Pathname, File
 			%(#{object.class.name}("#{object.to_path}"))
-		when MatchData, DateTime, Time
+		when MatchData, defined?(Date) && Date, (defined?(DateTime) && DateTime), (defined?(Time) && Time)
 			%(#{object.class.name}("#{object}"))
 		when Exception
 			%(#{object.class.name}("#{object.message}"))
 		when Symbol, String, Integer, Float, Regexp, Range, Rational, Complex, true, false, nil
 			object.inspect
-		when defined?(Date) && Date
-			%(#{object.class.name}("#{object}"))
-		when Struct, (defined?(Data) && Data)
+		when Struct, defined?(Data) && Data
 			buffer = +""
 			members = object.members.take(max_instance_variables) # TODO: either rename max_instance_variables to max_properties or define a max_members specifcally for data objects
 			total_count = object.members.length
