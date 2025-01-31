@@ -23,6 +23,8 @@ module Sumi
 		tab = " " * tab_width
 
 		case object
+		when Symbol, String, Integer, Float, Regexp, Range, Rational, Complex, TrueClass, FalseClass, NilClass
+			object.inspect
 		when Hash
 			return "{}" if object.empty?
 
@@ -77,12 +79,10 @@ module Sumi
 			object.name
 		when Pathname, File
 			%(#{object.class.name}("#{object.to_path}"))
-		when MatchData, defined?(Date) && Date, (defined?(DateTime) && DateTime), (defined?(Time) && Time)
+		when MatchData, (defined?(Date) && Date), (defined?(DateTime) && DateTime), (defined?(Time) && Time)
 			%(#{object.class.name}("#{object}"))
 		when Exception
 			%(#{object.class.name}("#{object.message}"))
-		when Symbol, String, Integer, Float, Regexp, Range, Rational, Complex, TrueClass, FalseClass, NilClass
-			object.inspect
 		when Struct, defined?(Data) && Data
 			buffer = +""
 			members = object.members.take(max_instance_variables) # TODO: either rename max_instance_variables to max_properties or define a max_members specifcally for data objects
