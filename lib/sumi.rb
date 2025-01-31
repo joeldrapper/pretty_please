@@ -82,7 +82,7 @@ module Sumi
 			%(#{object.class.name}("#{object}"))
 		when Exception
 			%(#{object.class.name}("#{object.message}"))
-		when Symbol, String, Integer, Float, Regexp, Range, Rational, Complex, true, false, nil
+		when Symbol, String, Integer, Float, Regexp, Range, Rational, Complex, TrueClass, FalseClass, NilClass
 			object.inspect
 		when defined?(Date) && Date
 			%(#{object.class.name}("#{object}"))
