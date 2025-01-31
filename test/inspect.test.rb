@@ -441,3 +441,11 @@ test "file" do
 		File("#{file.to_path}")
 	RUBY
 end
+
+test "match data" do
+	match_data = "String".match(/.+/)
+
+	assert_equal_ruby Sumi.inspect(match_data), <<~RUBY.chomp
+		MatchData("String")
+	RUBY
+end
