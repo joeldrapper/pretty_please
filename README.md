@@ -23,6 +23,8 @@ gem install sumi
 
 ### Usage
 
+`Sumi.print(object)` prints the object with ANSI highlighting.
+
 The `Sumi.inspect` method provides a structured and human-readable representation of Ruby objects by outputting valid Ruby code.
 
 It handles a variety of data types including Hashes, Arrays, Sets, Modules, and user-defined objects.
@@ -49,12 +51,11 @@ puts Sumi.inspect({ a: 1, b: [2, 3], c: { d: 4 } })
 
 **Options:**
 
-* `object`: (required) – The object to inspect and format.
-* `tab_width`: 2 (Integer) – The number of spaces (or tabs) per indentation level.
-* `max_width`: 60 (Integer) – The maximum width before elements are split into multiple lines.
-* `max_depth`: 5 (Integer) – The maximum depth of nested structures before truncation.
-* `max_instance_variables`: 10 (Integer) – The maximum number of instance variables to display for objects.
-
+- `object`: (required) – The object to inspect and format.
+- `tab_width`: 2 (Integer) – The number of spaces (or tabs) per indentation level.
+- `max_width`: 60 (Integer) – The maximum width before elements are split into multiple lines.
+- `max_depth`: 5 (Integer) – The maximum depth of nested structures before truncation.
+- `max_instance_variables`: 10 (Integer) – The maximum number of instance variables to display for objects.
 
 ### Development
 
