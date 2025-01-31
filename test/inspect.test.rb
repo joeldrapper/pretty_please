@@ -404,3 +404,11 @@ test "exception" do
 		ArgumentError("message")
 	RUBY
 end
+
+test "file" do
+	file = Tempfile.create
+
+	assert_equal_ruby Sumi.inspect(file), <<~RUBY.chomp
+		File("#{file.to_path}")
+	RUBY
+end

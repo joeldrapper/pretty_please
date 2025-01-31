@@ -76,8 +76,8 @@ module Sumi
 			end
 		when Module
 			object.name
-		when Pathname
-			%(Pathname("#{object.to_path}"))
+		when Pathname, File
+			%(#{object.class.name}("#{object.to_path}"))
 		when DateTime, Time
 			%(#{object.class.name}("#{object}"))
 		when Exception
