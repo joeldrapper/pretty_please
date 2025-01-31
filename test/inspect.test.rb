@@ -396,3 +396,11 @@ test "max_depth" do
 		)
 	RUBY
 end
+
+test "exception" do
+	exception = ArgumentError.new("message")
+
+	assert_equal_ruby Sumi.inspect(exception), <<~RUBY.chomp
+		ArgumentError("message")
+	RUBY
+end
