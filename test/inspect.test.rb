@@ -15,6 +15,36 @@ test "object with no properties" do
 	assert_equal_ruby Sumi.inspect(Object.new), %(Object())
 end
 
+
+test "struct" do
+	customer = Struct.new(:name, :address) do
+		def self.name
+			"Customer"
+		end
+	end
+
+	assert_equal_ruby Sumi.inspect(customer.new("Dave", "123 Main")), <<~RUBY.chomp
+    Customer(
+      name: "Dave",
+      address: "123 Main",
+    )
+	RUBY
+end
+
+if (Gem::Version.new(RUBY_VERSION) >= Gem::Version.new("3.3"))
+	test "empty struct" do
+		empty = Struct.new do
+			def self.name
+				"Empty"
+			end
+		end
+
+		assert_equal_ruby Sumi.inspect(empty.new), <<~RUBY.chomp
+			Empty()
+		RUBY
+	end
+end
+
 if (Gem::Version.new(RUBY_VERSION) >= Gem::Version.new("3.2"))
 	test "data objects" do
 		measure = Data.define(:amount, :unit) do
@@ -402,32 +432,5 @@ test "exception" do
 
 	assert_equal_ruby Sumi.inspect(exception), <<~RUBY.chomp
 		ArgumentError("message")
-	RUBY
-end
-
-test "struct" do
-	customer = Struct.new(:name, :address) do
-		def self.name
-			"Customer"
-		end
-	end
-
-	assert_equal_ruby Sumi.inspect(customer.new("Dave", "123 Main")), <<~RUBY.chomp
-    Customer(
-      name: "Dave",
-      address: "123 Main",
-    )
-	RUBY
-end
-
-test "empty struct" do
-	empty = Struct.new do
-		def self.name
-			"Empty"
-		end
-	end
-
-	assert_equal_ruby Sumi.inspect(empty.new), <<~RUBY.chomp
-    Empty()
 	RUBY
 end
