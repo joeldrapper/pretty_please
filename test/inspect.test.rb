@@ -339,10 +339,7 @@ test "max_depth" do
 		  @value = [
 		    "object",
 		    MaxDepth(
-		      @value = [
-		        "level1",
-		        MaxDepth(...),
-		      ],
+		      @value = ["level1", MaxDepth(...)],
 		    ),
 		  ],
 		)

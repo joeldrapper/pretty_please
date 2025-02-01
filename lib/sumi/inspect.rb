@@ -48,7 +48,7 @@ class Sumi::Inspect
 			end
 		end
 
-		if (@lines > original_lines) || (length > (@max_width - (@indent * @tab_width)))
+		if (@lines > original_lines) || (length > @max_width)
 			indent do
 				items.each do |item|
 					newline
