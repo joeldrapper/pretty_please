@@ -241,57 +241,57 @@ test "simple self referencing" do
 	RUBY
 end
 
-# test "self-referencing" do
-# 	array = [1, 2, 3]
+test "self-referencing" do
+	array = [1, 2, 3]
 
-# 	object = {
-# 		id: 1,
-# 		array:,
-# 	}
+	object = {
+		id: 1,
+		array:,
+	}
 
-# 	sibling = {
-# 		id: 2,
-# 		array: array.reverse,
-# 		previous_sibling: object,
-# 	}
+	sibling = {
+		id: 2,
+		array: array.reverse,
+		previous_sibling: object,
+	}
 
-# 	parent = {
-# 		object:,
-# 		self_twice: [object, object],
-# 	}
+	parent = {
+		object:,
+		self_twice: [object, object],
+	}
 
-# 	object[:parent] = parent
-# 	object[:next_sibling] = sibling
+	object[:parent] = parent
+	object[:next_sibling] = sibling
 
-# 	parent[:children] = [
-# 		object,
-# 		sibling,
-# 	]
+	parent[:children] = [
+		object,
+		sibling,
+	]
 
-# 	assert_equal_ruby Sumi.inspect(object), <<~RUBY.chomp
-# 	{
-# 	  id: 1,
-# 	  array: [1, 2, 3],
-# 	  parent: {
-# 	    object: self,
-# 	    self_twice: [self, self],
-# 	    children: [
-# 	      self,
-# 	      {
-# 	        id: 2,
-# 	        array: [3, 2, 1],
-# 	        previous_sibling: self,
-# 	      },
-# 	    ],
-# 	  },
-# 	  next_sibling: {
-# 	    id: 2,
-# 	    array: [3, 2, 1],
-# 	    previous_sibling: self,
-# 	  },
-# 	}
-# 	RUBY
-# end
+	assert_equal_ruby Sumi.inspect(object, max_depth: 10), <<~RUBY.chomp
+	{
+	  id: 1,
+	  array: [1, 2, 3],
+	  parent: {
+	    object: self,
+	    self_twice: [self, self],
+	    children: [
+	      self,
+	      {
+	        id: 2,
+	        array: [3, 2, 1],
+	        previous_sibling: self,
+	      },
+	    ],
+	  },
+	  next_sibling: {
+	    id: 2,
+	    array: [3, 2, 1],
+	    previous_sibling: self,
+	  },
+	}
+	RUBY
+end
 
 test "max_instance_variables" do
 	object = Object.new
@@ -334,16 +334,14 @@ test "max_depth" do
 	level1 = max_depth.new(["level1", level2])
 	object = max_depth.new(["object", level1])
 
-	assert_equal_ruby Sumi.inspect(object, max_width: 300), <<~RUBY.chomp
+	assert_equal_ruby Sumi.inspect(object), <<~RUBY.chomp
 		MaxDepth(
 		  @value = [
 		    "object",
 		    MaxDepth(
 		      @value = [
 		        "level1",
-		        MaxDepth(
-		          ...
-		        ),
+		        MaxDepth(...),
 		      ],
 		    ),
 		  ],

@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Sumi::Inspect
+	Null = Object.new
+
 	def self.call(object, ...)
 		new(...).call(object)
 	end
@@ -16,6 +18,7 @@ class Sumi::Inspect
 		@buffer = +""
 		@lines = 0 # note, this is not reset within a capture
 		@stack = []
+		@original_object = Null
 	end
 
 	def call(object)
@@ -24,19 +27,28 @@ class Sumi::Inspect
 	end
 
 	def map(object, around_inline: nil)
+		if @stack.size >= @max_depth
+			push "..."
+			return
+		end
+
 		return unless object.any?
 
 		length = 0
+		length += around_inline.bytesize * 2 if around_inline
+
 		original_lines = @lines
 		exceeds_max_items = object.length > @max_items
 
-		items = object.take(@max_items).map do |item|
-			pretty_item = yield(item)
-			length += pretty_item.bytesize
-			pretty_item
+		items = indent do
+			object.take(@max_items).map do |item|
+				pretty_item = yield(item)
+				length += pretty_item.bytesize + 2 # for the ", "
+				pretty_item
+			end
 		end
 
-		if (@lines > original_lines) || (length > @max_width - (@indent * @tab_width))
+		if (@lines > original_lines) || (length > (@max_width - (@indent * @tab_width)))
 			indent do
 				items.each do |item|
 					newline
@@ -49,8 +61,8 @@ class Sumi::Inspect
 					push "..."
 				end
 			end
-
 			newline
+
 		else
 			push around_inline
 			push items.join(", ")
@@ -61,14 +73,14 @@ class Sumi::Inspect
 
 	def indent
 		@indent += 1
-		yield
+		value = yield
 		@indent -= 1
+		value
 	end
 
 	def newline
 		@lines += 1
-		push "\n"
-		push @indent_bytes * @indent
+		push "\n#{@indent_bytes * @indent}"
 	end
 
 	def push(string)
@@ -88,12 +100,18 @@ class Sumi::Inspect
 	private
 
 	def inspect(object)
-		if (last = @stack.last) && last == object
-			push "self"
-			return
+		original_object = @original_object
+
+		if original_object == Null
+			@original_object = object
 		else
-			@stack.push(object)
+			if original_object.equal?(object)
+				push "self"
+				return
+			end
 		end
+
+		@stack.push(object)
 
 		case object
 		when Symbol, String, Integer, Float, Regexp, Range, Rational, Complex, TrueClass, FalseClass, NilClass
@@ -124,8 +142,7 @@ class Sumi::Inspect
 			end
 			push "}"
 		when Struct, defined?(Data) && Data
-			push object.class.name
-			push "("
+			push "#{object.class.name}("
 			items = object.members.map { |key| [key, object.__send__(key)] }
 			map(items) { |key, value| "#{key}: #{capture { inspect(value) }}" }
 			push ")"
