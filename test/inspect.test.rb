@@ -372,8 +372,6 @@ end
 
 test "custom inspect" do
 	my_class = Class.new do
-		def self.name = "MyClass"
-
 		def sumi_inspect(i)
 			i.push "Custom["
 			i.map([1, 2, 3]) { |it| i.capture { i.inspect(it) } }
