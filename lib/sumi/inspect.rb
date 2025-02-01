@@ -26,6 +26,72 @@ class Sumi::Inspect
 		@buffer
 	end
 
+	def inspect(object)
+		original_object = @original_object
+
+		if original_object == Null
+			@original_object = object
+		else
+			if original_object.equal?(object)
+				push "self"
+				return
+			end
+		end
+
+		@stack.push(object)
+
+		if object.respond_to?(:sumi_inspect)
+			object.sumi_inspect(self)
+		else
+			case object
+			when Symbol, String, Integer, Float, Regexp, Range, Rational, Complex, TrueClass, FalseClass, NilClass
+				push object.inspect
+			when Module
+				push object.name
+			when Pathname, File
+				push %(#{object.class.name}("#{object.to_path}"))
+			when MatchData, (defined?(Date) && Date), (defined?(DateTime) && DateTime), (defined?(Time) && Time), (defined?(URI) && URI)
+				push %(#{object.class.name}("#{object}"))
+			when Array
+				push "["
+				map(object) { |it| capture { inspect(it) } }
+				push "]"
+			when Exception
+				push %(#{object.class.name}("#{object.message}"))
+			when Hash
+				push "{"
+				map(object, around_inline: " ") do |key, value|
+					case key
+					when Symbol
+						"#{key.name}: #{capture { inspect(value) }}"
+					else
+						key = capture { inspect(key) }
+						value = capture { inspect(value) }
+						"#{key} => #{value}"
+					end
+				end
+				push "}"
+			when Struct, defined?(Data) && Data
+				push "#{object.class.name}("
+				items = object.members.map { |key| [key, object.__send__(key)] }
+				map(items) { |key, value| "#{key}: #{capture { inspect(value) }}" }
+				push ")"
+			when defined?(Set) && Set
+				push "Set["
+				map(object.to_a.sort) { |it| capture { inspect(it) } }
+				push "]"
+			else
+				push "#{object.class.name}("
+				map(object.instance_variables) do |name|
+					"#{name} = #{capture { inspect(object.instance_variable_get(name)) }}"
+				end
+				push ")"
+			end
+		end
+
+		@stack.pop
+	end
+
 	def map(object, around_inline: nil)
 		if @stack.size >= @max_depth
 			push "..."
@@ -95,69 +161,5 @@ class Sumi::Inspect
 		yield
 		@buffer = original_buffer
 		new_buffer
-	end
-
-	private
-
-	def inspect(object)
-		original_object = @original_object
-
-		if original_object == Null
-			@original_object = object
-		else
-			if original_object.equal?(object)
-				push "self"
-				return
-			end
-		end
-
-		@stack.push(object)
-
-		case object
-		when Symbol, String, Integer, Float, Regexp, Range, Rational, Complex, TrueClass, FalseClass, NilClass
-			push object.inspect
-		when Module
-			push object.name
-		when Pathname, File
-			push %(#{object.class.name}("#{object.to_path}"))
-		when MatchData, (defined?(Date) && Date), (defined?(DateTime) && DateTime), (defined?(Time) && Time), (defined?(URI) && URI)
-			push %(#{object.class.name}("#{object}"))
-		when Array
-			push "["
-			map(object) { |it| capture { inspect(it) } }
-			push "]"
-		when Exception
-			push %(#{object.class.name}("#{object.message}"))
-		when Hash
-			push "{"
-			map(object, around_inline: " ") do |key, value|
-				case key
-				when Symbol
-					"#{key.name}: #{capture { inspect(value) }}"
-				else
-					key = capture { inspect(key) }
-					value = capture { inspect(value) }
-					"#{key} => #{value}"
-				end
-			end
-			push "}"
-		when Struct, defined?(Data) && Data
-			push "#{object.class.name}("
-			items = object.members.map { |key| [key, object.__send__(key)] }
-			map(items) { |key, value| "#{key}: #{capture { inspect(value) }}" }
-			push ")"
-		when defined?(Set) && Set
-			push "Set["
-			map(object.to_a.sort) { |it| capture { inspect(it) } }
-			push "]"
-		else
-			push "#{object.class.name}("
-			map(object.instance_variables) do |name|
-				"#{name} = #{capture { inspect(object.instance_variable_get(name)) }}"
-			end
-			push ")"
-		end
-
-		@stack.pop
 	end
 end
