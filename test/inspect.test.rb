@@ -6,10 +6,7 @@ require "date"
 
 test "objects" do
 	assert_equal_ruby Sumi.inspect(Example.new), <<~RUBY.chomp
-		Example(
-		  @foo = 1,
-		  @bar = [2, 3, 4],
-		)
+		Example(@foo = 1, @bar = [2, 3, 4])
 	RUBY
 end
 
@@ -55,10 +52,7 @@ if (Gem::Version.new(RUBY_VERSION) >= Gem::Version.new("3.2"))
 		end
 
 		assert_equal_ruby Sumi.inspect(measure.new(100, "km")), <<~RUBY.chomp
-			Measure(
-			  amount: 100,
-			  unit: "km",
-			)
+			Measure(amount: 100, unit: "km")
 		RUBY
 	end
 
@@ -174,13 +168,7 @@ test "nested hashes" do
 	}
 
 	assert_equal_ruby Sumi.inspect(object), <<~RUBY.chomp
-		{
-		  foo: {
-		    bar: {
-		      baz: 1,
-		    },
-		  },
-		}
+		{ foo: { bar: { baz: 1 } } }
 	RUBY
 end
 
@@ -205,48 +193,9 @@ test "long arrays" do
 		"Nine",
 		"Ten",
 		"Eleven",
-		"Twelve",
-		"Thirteen",
-		"Fourteen",
-		"Fifteen",
-		"Sixteen",
-		"Seventeen",
-		"Eighteen",
-		"Nineteen",
-		"Twenty",
-		["A", "B", "C"],
-		{
-			:a => [1, 2, 3],
-			:b => {
-				"c" => 1.3232332,
-				[1, 2, 3] => Set[4, 3, 2, 1],
-			},
-		},
-		[
-			"One",
-			"Two",
-			"Three",
-			"Four",
-			"Five",
-			"Six",
-			"Seven",
-			"Eight",
-			"Nine",
-			"Ten",
-			"Eleven",
-			"Twelve",
-			"Thirteen",
-			"Fourteen",
-			"Fifteen",
-			"Sixteen",
-			"Seventeen",
-			"Eighteen",
-			"Nineteen",
-			"Twenty",
-		],
 	]
 
-	assert_equal_ruby Sumi.inspect(object), <<~RUBY.chomp
+	assert_equal Sumi.inspect(object), <<~RUBY.chomp
 		[
 		  "One",
 		  "Two",
@@ -258,46 +207,7 @@ test "long arrays" do
 		  "Eight",
 		  "Nine",
 		  "Ten",
-		  "Eleven",
-		  "Twelve",
-		  "Thirteen",
-		  "Fourteen",
-		  "Fifteen",
-		  "Sixteen",
-		  "Seventeen",
-		  "Eighteen",
-		  "Nineteen",
-		  "Twenty",
-		  ["A", "B", "C"],
-		  {
-		    a: [1, 2, 3],
-		    b: {
-		      "c" => 1.3232332,
-		      [1, 2, 3] => Set[1, 2, 3, 4],
-		    },
-		  },
-		  [
-		    "One",
-		    "Two",
-		    "Three",
-		    "Four",
-		    "Five",
-		    "Six",
-		    "Seven",
-		    "Eight",
-		    "Nine",
-		    "Ten",
-		    "Eleven",
-		    "Twelve",
-		    "Thirteen",
-		    "Fourteen",
-		    "Fifteen",
-		    "Sixteen",
-		    "Seventeen",
-		    "Eighteen",
-		    "Nineteen",
-		    "Twenty",
-		  ],
+		  ...
 		]
 	RUBY
 end
@@ -319,6 +229,15 @@ test "pathname" do
 
 	assert_equal_ruby Sumi.inspect(Pathname.new("/path/to/somewhere.txt")), <<~RUBY.chomp
 		Pathname("/path/to/somewhere.txt")
+	RUBY
+end
+
+test "simple self referencing" do
+	object = []
+	object << object
+
+	assert_equal_ruby Sumi.inspect(object), <<~RUBY.chomp
+		[self]
 	RUBY
 end
 
@@ -349,7 +268,7 @@ test "self-referencing" do
 		sibling,
 	]
 
-	assert_equal_ruby Sumi.inspect(object), <<~RUBY.chomp
+	assert_equal_ruby Sumi.inspect(object, max_depth: 10), <<~RUBY.chomp
 	{
 	  id: 1,
 	  array: [1, 2, 3],
@@ -415,17 +334,12 @@ test "max_depth" do
 	level1 = max_depth.new(["level1", level2])
 	object = max_depth.new(["object", level1])
 
-	assert_equal_ruby Sumi.inspect(object, max_width: 300), <<~RUBY.chomp
+	assert_equal_ruby Sumi.inspect(object), <<~RUBY.chomp
 		MaxDepth(
 		  @value = [
 		    "object",
 		    MaxDepth(
-		      @value = [
-		        "level1",
-		        MaxDepth(
-		          ...
-		        ),
-		      ],
+		      @value = ["level1", MaxDepth(...)],
 		    ),
 		  ],
 		)
