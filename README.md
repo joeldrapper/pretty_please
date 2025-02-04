@@ -63,6 +63,9 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ### Contributing
 
+> [!WARNING]
+> Object diffs in `assert_equal` test output are self-hosted. That means if you mess up the output, the tests might not tell you since they are driven by the output. Most of the tests use `assert_equal_ruby`, which is not driven by Sumi.
+
 Bug reports and pull requests are welcome on GitHub at https://github.com/joeldrapper/sumi. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [code of conduct](https://github.com/joeldrapper/sumi/blob/main/CODE_OF_CONDUCT.md).
 
 ### Code of Conduct
