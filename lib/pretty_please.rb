@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-require "sumi/version"
+require "pretty_please/version"
 require "dispersion"
 
-module Sumi
-	autoload :Inspect, "sumi/inspect"
+module PrettyPlease
+	autoload :Inspect, "pretty_please/inspect"
 
 	def self.print(object)
 		puts Dispersion.ansi(inspect(object))

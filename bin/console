@@ -2,6 +2,6 @@
 # frozen_string_literal: true
 
 require "irb"
-require "sumi"
+require "pretty_please"
 
 IRB.start(__FILE__)

@@ -1,40 +1,40 @@
-## Sumi - Pretty Print Ruby objects as Ruby
+## PrettyPlease - Pretty Print Ruby objects as Ruby
 
-Sumi (墨) is a pretty-printing library for Ruby that formats objects in a readable and structured way.
+PrettyPlease is a pretty-printing library for Ruby that formats objects in a readable and structured way.
 
-Sumi ensures the output is **valid Ruby code**, making it human, machine, and [diff](https://github.com/joeldrapper/difftastic-ruby)-friendly.
+PrettyPlease ensures the output is **valid Ruby code**, making it human, machine, and [diff](https://github.com/joeldrapper/difftastic-ruby)-friendly.
 
 > [!NOTE]
-> Sumi is used and was extracted from [`difftastic-ruby`](https://github.com/joeldrapper/difftastic-ruby).
+> PrettyPlease is used and was extracted from [`difftastic-ruby`](https://github.com/joeldrapper/difftastic-ruby).
 
 ### Installation
 
 Install the gem and add it to the application's `Gemfile` by executing:
 
 ```shell
-bundle add sumi
+bundle add pretty_please
 ```
 
 If bundler is not being used to manage dependencies, install the gem by executing:
 
 ```shell
-gem install sumi
+gem install pretty_please
 ```
 
 ### Usage
 
-`Sumi.print(object)` prints the object with ANSI highlighting.
+`PrettyPlease.print(object)` prints the object with ANSI highlighting.
 
-The `Sumi.inspect` method provides a structured and human-readable representation of Ruby objects by outputting valid Ruby code.
+The `PrettyPlease.inspect` method provides a structured and human-readable representation of Ruby objects by outputting valid Ruby code.
 
 It handles a variety of data types including Hashes, Arrays, Sets, Modules, and user-defined objects.
 
 #### Basic Usage
 
 ```ruby
-require "sumi"
+require "pretty_please"
 
-puts Sumi.inspect({ a: 1, b: [2, 3], c: { d: 4 } })
+puts PrettyPlease.inspect({ a: 1, b: [2, 3], c: { d: 4 } })
 ```
 
 **Output:**
@@ -64,10 +64,10 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 ### Contributing
 
 > [!WARNING]
-> Object diffs in `assert_equal` test output are self-hosted. That means if you mess up the output, the tests might not tell you since they are driven by the output. Most of the tests use `assert_equal_ruby`, which is not driven by Sumi.
+> Object diffs in `assert_equal` test output are self-hosted. That means if you mess up the output, the tests might not tell you since they are driven by the output. Most of the tests use `assert_equal_ruby`, which is not driven by PrettyPlease.
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/joeldrapper/sumi. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [code of conduct](https://github.com/joeldrapper/sumi/blob/main/CODE_OF_CONDUCT.md).
+Bug reports and pull requests are welcome on GitHub at https://github.com/joeldrapper/pretty_please. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [code of conduct](https://github.com/joeldrapper/pretty_please/blob/main/CODE_OF_CONDUCT.md).
 
 ### Code of Conduct
 
-Everyone interacting in the `Sumi` project's codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/joeldrapper/sumi/blob/main/CODE_OF_CONDUCT.md).
+Everyone interacting in the `PrettyPlease` project's codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/joeldrapper/pretty_please/blob/main/CODE_OF_CONDUCT.md).

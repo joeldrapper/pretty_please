@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Sumi::Inspect
+class PrettyPlease::Inspect
 	Null = Object.new
 
 	def self.call(object, ...)
@@ -40,8 +40,8 @@ class Sumi::Inspect
 
 		@stack.push(object)
 
-		if object.respond_to?(:sumi_inspect)
-			object.sumi_inspect(self)
+		if object.respond_to?(:pretty_please_inspect)
+			object.pretty_please_inspect(self)
 		else
 			case object
 			when Symbol, String, Integer, Float, Regexp, Range, Rational, Complex, TrueClass, FalseClass, NilClass

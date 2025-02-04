@@ -13,7 +13,7 @@ end
 
 Bundler.require :test
 
-require "sumi"
+require "pretty_please"
 
 class Example
 	def initialize
