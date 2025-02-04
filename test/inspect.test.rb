@@ -369,3 +369,17 @@ test "match data" do
 		MatchData("String")
 	RUBY
 end
+
+test "custom inspect" do
+	my_class = Class.new do
+		def sumi_inspect(i)
+			i.push "Custom["
+			i.map([1, 2, 3]) { |it| i.capture { i.inspect(it) } }
+			i.push "]"
+		end
+	end
+
+	assert_equal_ruby Sumi.inspect(my_class.new), <<~RUBY.chomp
+		Custom[1, 2, 3]
+	RUBY
+end
