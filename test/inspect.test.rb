@@ -4,14 +4,18 @@ require "set"
 require "uri"
 require "date"
 
+def prettify(...)
+	PrettyPlease.prettify(...)
+end
+
 test "objects" do
-	assert_equal_ruby PrettyPlease.inspect(Example.new), <<~RUBY.chomp
+	assert_equal_ruby prettify(Example.new), <<~RUBY.chomp
 		Example(@foo = 1, @bar = [2, 3, 4])
 	RUBY
 end
 
 test "object with no properties" do
-	assert_equal_ruby PrettyPlease.inspect(Object.new), %(Object())
+	assert_equal_ruby prettify(Object.new), %(Object())
 end
 
 test "struct" do
@@ -21,7 +25,7 @@ test "struct" do
 		end
 	end
 
-	assert_equal_ruby PrettyPlease.inspect(customer.new("Dave", "123 Main")), <<~RUBY.chomp
+	assert_equal_ruby prettify(customer.new("Dave", "123 Main")), <<~RUBY.chomp
     Customer(
       name: "Dave",
       address: "123 Main",
@@ -37,7 +41,7 @@ if (Gem::Version.new(RUBY_VERSION) >= Gem::Version.new("3.3"))
 			end
 		end
 
-		assert_equal_ruby PrettyPlease.inspect(empty.new), <<~RUBY.chomp
+		assert_equal_ruby prettify(empty.new), <<~RUBY.chomp
 			Empty()
 		RUBY
 	end
@@ -51,7 +55,7 @@ if (Gem::Version.new(RUBY_VERSION) >= Gem::Version.new("3.2"))
 			end
 		end
 
-		assert_equal_ruby PrettyPlease.inspect(measure.new(100, "km")), <<~RUBY.chomp
+		assert_equal_ruby prettify(measure.new(100, "km")), <<~RUBY.chomp
 			Measure(amount: 100, unit: "km")
 		RUBY
 	end
@@ -63,97 +67,97 @@ if (Gem::Version.new(RUBY_VERSION) >= Gem::Version.new("3.2"))
 			end
 		end
 
-		assert_equal_ruby PrettyPlease.inspect(empty.new), %(Empty())
+		assert_equal_ruby prettify(empty.new), %(Empty())
 	end
 end
 
 test "empty set" do
-	assert_equal_ruby PrettyPlease.inspect(Set.new), "Set[]"
+	assert_equal_ruby prettify(Set.new), "Set[]"
 end
 
 test "empty array" do
-	assert_equal_ruby PrettyPlease.inspect([]), "[]"
+	assert_equal_ruby prettify([]), "[]"
 end
 
 test "empty object" do
-	assert_equal_ruby PrettyPlease.inspect({}), "{}"
+	assert_equal_ruby prettify({}), "{}"
 end
 
 test "empty string" do
-	assert_equal_ruby PrettyPlease.inspect(""), %("")
+	assert_equal_ruby prettify(""), %("")
 end
 
 test "empty symbol" do
-	assert_equal_ruby PrettyPlease.inspect(:""), %(:"")
+	assert_equal_ruby prettify(:""), %(:"")
 end
 
 test "time" do
-	assert_equal_ruby PrettyPlease.inspect(Time.at(1738319106).utc), %(Time("2025-01-31 10:25:06 UTC"))
+	assert_equal_ruby prettify(Time.at(1738319106).utc), %(Time("2025-01-31 10:25:06 UTC"))
 end
 
 test "integer" do
-	assert_equal_ruby PrettyPlease.inspect(-1), %(-1)
-	assert_equal_ruby PrettyPlease.inspect(0), %(0)
-	assert_equal_ruby PrettyPlease.inspect(3), %(3)
+	assert_equal_ruby prettify(-1), %(-1)
+	assert_equal_ruby prettify(0), %(0)
+	assert_equal_ruby prettify(3), %(3)
 end
 
 test "float" do
-	assert_equal_ruby PrettyPlease.inspect(3.1415), %(3.1415)
+	assert_equal_ruby prettify(3.1415), %(3.1415)
 end
 
 test "regexp" do
-	assert_equal_ruby PrettyPlease.inspect(/\d{2}/), %(/\\d{2}/)
+	assert_equal_ruby prettify(/\d{2}/), %(/\\d{2}/)
 end
 
 test "range" do
-	assert_equal_ruby PrettyPlease.inspect(1..10), %(1..10)
-	assert_equal_ruby PrettyPlease.inspect(1...10), %(1...10)
+	assert_equal_ruby prettify(1..10), %(1..10)
+	assert_equal_ruby prettify(1...10), %(1...10)
 end
 
 test "rational" do
-	assert_equal_ruby PrettyPlease.inspect(Rational(1)), %((1/1))
-	assert_equal_ruby PrettyPlease.inspect(Rational(2, 3)), %((2/3))
-	assert_equal_ruby PrettyPlease.inspect(Rational(4, -6)), %((-2/3))
-	assert_equal_ruby PrettyPlease.inspect(3.to_r), %((3/1))
-	assert_equal_ruby PrettyPlease.inspect(2/3r), %((2/3))
+	assert_equal_ruby prettify(Rational(1)), %((1/1))
+	assert_equal_ruby prettify(Rational(2, 3)), %((2/3))
+	assert_equal_ruby prettify(Rational(4, -6)), %((-2/3))
+	assert_equal_ruby prettify(3.to_r), %((3/1))
+	assert_equal_ruby prettify(2/3r), %((2/3))
 end
 
 test "complex" do
-	assert_equal_ruby PrettyPlease.inspect(2 + 1i), %((2+1i))
-	assert_equal_ruby PrettyPlease.inspect(Complex(1)), %((1+0i))
-	assert_equal_ruby PrettyPlease.inspect(Complex(2, 3)), %((2+3i))
-	assert_equal_ruby PrettyPlease.inspect(Complex.polar(2, 3)), %((-1.9799849932008908+0.2822400161197344i))
-	assert_equal_ruby PrettyPlease.inspect(3.to_c), %((3+0i))
+	assert_equal_ruby prettify(2 + 1i), %((2+1i))
+	assert_equal_ruby prettify(Complex(1)), %((1+0i))
+	assert_equal_ruby prettify(Complex(2, 3)), %((2+3i))
+	assert_equal_ruby prettify(Complex.polar(2, 3)), %((-1.9799849932008908+0.2822400161197344i))
+	assert_equal_ruby prettify(3.to_c), %((3+0i))
 end
 
 test "true" do
-	assert_equal_ruby PrettyPlease.inspect(true), %(true)
+	assert_equal_ruby prettify(true), %(true)
 end
 
 test "false" do
-	assert_equal_ruby PrettyPlease.inspect(false), %(false)
+	assert_equal_ruby prettify(false), %(false)
 end
 
 test "nil" do
-	assert_equal_ruby PrettyPlease.inspect(nil), %(nil)
+	assert_equal_ruby prettify(nil), %(nil)
 end
 
 test "date" do
-	assert_equal_ruby PrettyPlease.inspect(Date.parse("2015-01-31")), %(Date("2015-01-31"))
+	assert_equal_ruby prettify(Date.parse("2015-01-31")), %(Date("2015-01-31"))
 end
 
 test "uri" do
-	assert_equal_ruby PrettyPlease.inspect(URI.parse("https://example.com")), %(URI::HTTPS("https://example.com"))
+	assert_equal_ruby prettify(URI.parse("https://example.com")), %(URI::HTTPS("https://example.com"))
 end
 
 test "date time" do
-	assert_equal_ruby PrettyPlease.inspect(DateTime.parse("2025-01-31 11:17:18 +0100")), %(DateTime("2025-01-31T11:17:18+01:00"))
+	assert_equal_ruby prettify(DateTime.parse("2025-01-31 11:17:18 +0100")), %(DateTime("2025-01-31T11:17:18+01:00"))
 end
 
 test "sets are sorted" do
 	object = Set[2, 3, 1]
 
-	assert_equal_ruby PrettyPlease.inspect(object), <<~RUBY.chomp
+	assert_equal_ruby prettify(object), <<~RUBY.chomp
 		Set[1, 2, 3]
 	RUBY
 end
@@ -167,7 +171,7 @@ test "nested hashes" do
 		},
 	}
 
-	assert_equal_ruby PrettyPlease.inspect(object), <<~RUBY.chomp
+	assert_equal_ruby prettify(object), <<~RUBY.chomp
 		{ foo: { bar: { baz: 1 } } }
 	RUBY
 end
@@ -175,7 +179,7 @@ end
 test "nested arrays" do
 	object = [[1, 2], [3, 4]]
 
-	assert_equal_ruby PrettyPlease.inspect(object), <<~RUBY.chomp
+	assert_equal_ruby prettify(object), <<~RUBY.chomp
 	  [[1, 2], [3, 4]]
 	RUBY
 end
@@ -195,7 +199,7 @@ test "long arrays" do
 		"Eleven",
 	]
 
-	assert_equal PrettyPlease.inspect(object), <<~RUBY.chomp
+	assert_equal prettify(object), <<~RUBY.chomp
 		[
 		  "One",
 		  "Two",
@@ -213,21 +217,21 @@ test "long arrays" do
 end
 
 test "module and class" do
-	assert_equal_ruby PrettyPlease.inspect([Difftastic, Integer]), <<~RUBY.chomp
+	assert_equal_ruby prettify([Difftastic, Integer]), <<~RUBY.chomp
 		[Difftastic, Integer]
 	RUBY
 end
 
 test "pathname" do
-	assert_equal_ruby PrettyPlease.inspect(Pathname.new("")), <<~RUBY.chomp
+	assert_equal_ruby prettify(Pathname.new("")), <<~RUBY.chomp
 		Pathname("")
 	RUBY
 
-	assert_equal_ruby PrettyPlease.inspect(Pathname.new("/")), <<~RUBY.chomp
+	assert_equal_ruby prettify(Pathname.new("/")), <<~RUBY.chomp
 		Pathname("/")
 	RUBY
 
-	assert_equal_ruby PrettyPlease.inspect(Pathname.new("/path/to/somewhere.txt")), <<~RUBY.chomp
+	assert_equal_ruby prettify(Pathname.new("/path/to/somewhere.txt")), <<~RUBY.chomp
 		Pathname("/path/to/somewhere.txt")
 	RUBY
 end
@@ -236,7 +240,7 @@ test "simple self referencing" do
 	object = []
 	object << object
 
-	assert_equal_ruby PrettyPlease.inspect(object), <<~RUBY.chomp
+	assert_equal_ruby prettify(object), <<~RUBY.chomp
 		[self]
 	RUBY
 end
@@ -268,7 +272,7 @@ test "self-referencing" do
 		sibling,
 	]
 
-	assert_equal_ruby PrettyPlease.inspect(object, max_depth: 10), <<~RUBY.chomp
+	assert_equal_ruby prettify(object, max_depth: 10), <<~RUBY.chomp
 	{
 	  id: 1,
 	  array: [1, 2, 3],
@@ -300,7 +304,7 @@ test "max_instance_variables" do
 		object.instance_variable_set(:"@variable_#{i}", i)
 	end
 
-	assert_equal_ruby PrettyPlease.inspect(object), <<~RUBY.chomp
+	assert_equal_ruby prettify(object), <<~RUBY.chomp
 		Object(
 		  @variable_1 = 1,
 		  @variable_2 = 2,
@@ -334,7 +338,7 @@ test "max_depth" do
 	level1 = max_depth.new(["level1", level2])
 	object = max_depth.new(["object", level1])
 
-	assert_equal_ruby PrettyPlease.inspect(object), <<~RUBY.chomp
+	assert_equal_ruby prettify(object), <<~RUBY.chomp
 		MaxDepth(
 		  @value = [
 		    "object",
@@ -349,7 +353,7 @@ end
 test "exception" do
 	exception = ArgumentError.new("message")
 
-	assert_equal_ruby PrettyPlease.inspect(exception), <<~RUBY.chomp
+	assert_equal_ruby prettify(exception), <<~RUBY.chomp
 		ArgumentError("message")
 	RUBY
 end
@@ -357,7 +361,7 @@ end
 test "file" do
 	file = Tempfile.create
 
-	assert_equal_ruby PrettyPlease.inspect(file), <<~RUBY.chomp
+	assert_equal_ruby prettify(file), <<~RUBY.chomp
 		File("#{file.to_path}")
 	RUBY
 end
@@ -365,21 +369,21 @@ end
 test "match data" do
 	match_data = "String".match(/.+/)
 
-	assert_equal_ruby PrettyPlease.inspect(match_data), <<~RUBY.chomp
+	assert_equal_ruby prettify(match_data), <<~RUBY.chomp
 		MatchData("String")
 	RUBY
 end
 
 test "custom inspect" do
 	my_class = Class.new do
-		def pretty_please_inspect(i)
-			i.push "Custom["
-			i.map([1, 2, 3]) { |it| i.capture { i.inspect(it) } }
-			i.push "]"
+		def pretty_please(pp)
+			pp.push "Custom["
+			pp.map([1, 2, 3]) { |it| pp.capture { pp.prettify(it) } }
+			pp.push "]"
 		end
 	end
 
-	assert_equal_ruby PrettyPlease.inspect(my_class.new), <<~RUBY.chomp
+	assert_equal_ruby prettify(my_class.new), <<~RUBY.chomp
 		Custom[1, 2, 3]
 	RUBY
 end

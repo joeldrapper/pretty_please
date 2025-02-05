@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class PrettyPlease::Inspect
+class PrettyPlease::Prettifier
 	Null = Object.new
 
 	def self.call(object, ...)
@@ -22,11 +22,11 @@ class PrettyPlease::Inspect
 	end
 
 	def call(object)
-		inspect(object)
+		prettify(object)
 		@buffer
 	end
 
-	def inspect(object)
+	def prettify(object)
 		original_object = @original_object
 
 		if original_object == Null
@@ -40,8 +40,8 @@ class PrettyPlease::Inspect
 
 		@stack.push(object)
 
-		if object.respond_to?(:pretty_please_inspect)
-			object.pretty_please_inspect(self)
+		if object.respond_to?(:pretty_please)
+			object.pretty_please(self)
 		else
 			case object
 			when Symbol, String, Integer, Float, Regexp, Range, Rational, Complex, TrueClass, FalseClass, NilClass
@@ -54,7 +54,7 @@ class PrettyPlease::Inspect
 				push %(#{object.class.name}("#{object}"))
 			when Array
 				push "["
-				map(object) { |it| capture { inspect(it) } }
+				map(object) { |it| capture { prettify(it) } }
 				push "]"
 			when Exception
 				push %(#{object.class.name}("#{object.message}"))
@@ -63,10 +63,10 @@ class PrettyPlease::Inspect
 				map(object, around_inline: " ") do |key, value|
 					case key
 					when Symbol
-						"#{key.name}: #{capture { inspect(value) }}"
+						"#{key.name}: #{capture { prettify(value) }}"
 					else
-						key = capture { inspect(key) }
-						value = capture { inspect(value) }
+						key = capture { prettify(key) }
+						value = capture { prettify(value) }
 						"#{key} => #{value}"
 					end
 				end
@@ -74,16 +74,16 @@ class PrettyPlease::Inspect
 			when Struct, defined?(Data) && Data
 				push "#{object.class.name}("
 				items = object.members.map { |key| [key, object.__send__(key)] }
-				map(items) { |key, value| "#{key}: #{capture { inspect(value) }}" }
+				map(items) { |key, value| "#{key}: #{capture { prettify(value) }}" }
 				push ")"
 			when defined?(Set) && Set
 				push "Set["
-				map(object.to_a.sort) { |it| capture { inspect(it) } }
+				map(object.to_a.sort) { |it| capture { prettify(it) } }
 				push "]"
 			else
 				push "#{object.class.name}("
 				map(object.instance_variables) do |name|
-					"#{name} = #{capture { inspect(object.instance_variable_get(name)) }}"
+					"#{name} = #{capture { prettify(object.instance_variable_get(name)) }}"
 				end
 				push ")"
 			end
