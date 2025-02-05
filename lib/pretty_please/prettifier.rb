@@ -48,7 +48,7 @@ class PrettyPlease::Prettifier
 				push object.inspect
 			when Module
 				push object.name
-			when Pathname, File
+			when File, defined?(Pathname) && Pathname
 				push %(#{object.class.name}("#{object.to_path}"))
 			when MatchData, (defined?(Date) && Date), (defined?(DateTime) && DateTime), (defined?(Time) && Time), (defined?(URI) && URI)
 				push %(#{object.class.name}("#{object}"))
