@@ -25,7 +25,7 @@ gem install pretty_please
 
 `PrettyPlease.print(object)` prints the object with ANSI highlighting.
 
-The `PrettyPlease.inspect` method provides a structured and human-readable representation of Ruby objects by outputting valid Ruby code.
+The `PrettyPlease.prettify` method provides a structured and human-readable representation of Ruby objects by outputting valid Ruby code.
 
 It handles a variety of data types including Hashes, Arrays, Sets, Modules, and user-defined objects.
 
@@ -34,7 +34,7 @@ It handles a variety of data types including Hashes, Arrays, Sets, Modules, and 
 ```ruby
 require "pretty_please"
 
-puts PrettyPlease.inspect({ a: 1, b: [2, 3], c: { d: 4 } })
+puts PrettyPlease.prettify({ a: 1, b: [2, 3], c: { d: 4 } })
 ```
 
 **Output:**
@@ -49,11 +49,11 @@ puts PrettyPlease.inspect({ a: 1, b: [2, 3], c: { d: 4 } })
 
 **Options:**
 
-- `object`: (required) – The object to inspect and format.
+- `object`: (required) – The object to prettify and format.
 - `tab_width`: 2 (Integer) – The number of spaces (or tabs) per indentation level.
 - `max_width`: 60 (Integer) – The maximum width before elements are split into multiple lines.
 - `max_depth`: 5 (Integer) – The maximum depth of nested structures before truncation.
-- `max_instance_variables`: 10 (Integer) – The maximum number of instance variables to display for objects.
+- `max_items`: 10 (Integer) – The maximum number of instance variables to display for objects.
 
 ### Development
 
