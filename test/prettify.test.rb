@@ -10,12 +10,30 @@ end
 
 test "objects" do
 	assert_equal_ruby prettify(Example.new), <<~RUBY.chomp
-		Example(@foo = 1, @bar = [2, 3, 4])
+		Example(
+		  @foo = 1,
+		  @bar = [2, 3, 4],
+		)
 	RUBY
 end
 
 test "object with no properties" do
 	assert_equal_ruby prettify(Object.new), %(Object())
+end
+
+test "nested object and inlining" do
+	object = { hello: "123", world: { another: { layer: [1, 2, 3, { id: 1, object: { enabled: true } }] } } }
+
+	assert_equal_ruby prettify(object), <<~RUBY.chomp
+		{
+		  hello: "123",
+		  world: {
+		    another: {
+		      layer: [1, 2, 3, {...}],
+		    },
+		  },
+		}
+	RUBY
 end
 
 test "struct" do
@@ -184,7 +202,10 @@ test "nested arrays" do
 	object = [[1, 2], [3, 4]]
 
 	assert_equal_ruby prettify(object), <<~RUBY.chomp
-	  [[1, 2], [3, 4]]
+		[
+		  [1, 2],
+		  [3, 4],
+		]
 	RUBY
 end
 

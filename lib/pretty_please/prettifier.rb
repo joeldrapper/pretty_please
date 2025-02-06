@@ -14,6 +14,7 @@ class PrettyPlease::Prettifier
 		@max_items = max_items
 		@max_depth = max_depth
 		@indent_bytes = " " * @tab_width
+		@running_depth = 0
 
 		@buffer = +""
 		@lines = 0 # note, this is not reset within a capture
@@ -98,6 +99,8 @@ class PrettyPlease::Prettifier
 			return
 		end
 
+		@running_depth += 1
+
 		return unless object.any?
 
 		length = 0
@@ -105,6 +108,7 @@ class PrettyPlease::Prettifier
 
 		original_lines = @lines
 		exceeds_max_items = object.length > @max_items
+		current_running_depth = @running_depth
 
 		items = indent do
 			object.take(@max_items).map do |item|
@@ -114,7 +118,7 @@ class PrettyPlease::Prettifier
 			end
 		end
 
-		if (@lines > original_lines) || (length > @max_width)
+		if (@lines > original_lines) || (length > @max_width) || (@running_depth > current_running_depth)
 			indent do
 				items.each do |item|
 					newline
@@ -129,7 +133,7 @@ class PrettyPlease::Prettifier
 			end
 			newline
 
-		else
+		else # inline
 			push around_inline
 			push items.join(", ")
 			push ", ..." if exceeds_max_items
