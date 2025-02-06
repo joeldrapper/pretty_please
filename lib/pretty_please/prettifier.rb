@@ -82,7 +82,7 @@ class PrettyPlease::Prettifier
 				map(object) { |it| capture { prettify(it) } }
 				push "]"
 			when defined?(ActiveRecord::Base) && ActiveRecord::Base
-				@max_items_before = @max_items
+				max_items_before = @max_items
 				@max_items = object.attributes.length
 
 				push "#{object.class.name}("
@@ -91,7 +91,7 @@ class PrettyPlease::Prettifier
 				end
 				push ")"
 
-				@max_items = @max_items_before
+				@max_items = max_items_before
 			else
 				push "#{object.class.name}("
 				map(object.instance_variables) do |name|
