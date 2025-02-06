@@ -78,7 +78,7 @@ class PrettyPlease::Prettifier
 				push ")"
 			when defined?(Set) && Set
 				push "Set["
-				map(object.to_a.sort) { |it| capture { prettify(it) } }
+				map(object) { |it| capture { prettify(it) } }
 				push "]"
 			else
 				push "#{object.class.name}("

@@ -154,11 +154,11 @@ test "date time" do
 	assert_equal_ruby prettify(DateTime.parse("2025-01-31 11:17:18 +0100")), %(DateTime("2025-01-31T11:17:18+01:00"))
 end
 
-test "sets are sorted" do
+test "sets are not sorted" do
 	object = Set[2, 3, 1]
 
 	assert_equal_ruby prettify(object), <<~RUBY.chomp
-		Set[1, 2, 3]
+		Set[2, 3, 1]
 	RUBY
 end
 
@@ -172,7 +172,11 @@ test "nested hashes" do
 	}
 
 	assert_equal_ruby prettify(object), <<~RUBY.chomp
-		{ foo: { bar: { baz: 1 } } }
+	  {
+	    foo: {
+	      bar: { baz: 1 },
+	    },
+	  }
 	RUBY
 end
 
