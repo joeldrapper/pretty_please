@@ -14,6 +14,7 @@ end
 Bundler.require :test
 
 require "pretty_please"
+require "time"
 
 class Example
 	def initialize
@@ -38,8 +39,8 @@ class TestModel < ActiveRecord::Base
 		@attributes = {
 			"id" => 1,
 			"name" => "Test Model",
-			"created_at" => Time.new("2025-02-06 01:02:03 UTC"),
-			"updated_at" => Time.new("2025-02-06 04:05:06 UTC"),
+			"created_at" => Time.parse("2025-02-06 01:02:03 UTC"),
+			"updated_at" => Time.parse("2025-02-06 04:05:06 UTC"),
 			"date" => Date.parse("2025-02-06"),
 			"tags" => ["tag_1", "tag_2", "tag_3"],
 			"attribute_1" => "value_1",
