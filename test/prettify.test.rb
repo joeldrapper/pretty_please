@@ -298,27 +298,27 @@ test "self-referencing" do
 	]
 
 	assert_equal_ruby prettify(object, max_depth: 10), <<~RUBY.chomp
-	{
-	  id: 1,
-	  array: [1, 2, 3],
-	  parent: {
-	    object: self,
-	    self_twice: [self, self],
-	    children: [
-	      self,
-	      {
-	        id: 2,
-	        array: [3, 2, 1],
-	        previous_sibling: self,
-	      },
-	    ],
-	  },
-	  next_sibling: {
-	    id: 2,
-	    array: [3, 2, 1],
-	    previous_sibling: self,
-	  },
-	}
+		{
+		  id: 1,
+		  array: [1, 2, 3],
+		  parent: {
+		    object: self,
+		    self_twice: [self, self],
+		    children: [
+		      self,
+		      {
+		        id: 2,
+		        array: [3, 2, 1],
+		        previous_sibling: self,
+		      },
+		    ],
+		  },
+		  next_sibling: {
+		    id: 2,
+		    array: [3, 2, 1],
+		    previous_sibling: self,
+		  },
+		}
 	RUBY
 end
 
@@ -410,5 +410,27 @@ test "custom inspect" do
 
 	assert_equal_ruby prettify(my_class.new), <<~RUBY.chomp
 		Custom[1, 2, 3]
+	RUBY
+end
+
+test "ActiveRecord::Base Model" do
+	assert_equal_ruby prettify(TestModel.new), <<~RUBY.chomp
+		TestModel(
+		  id: 1,
+		  name: "Test Model",
+		  created_at: Time("2025-02-06 01:02:03 UTC"),
+		  updated_at: Time("2025-02-06 04:05:06 UTC"),
+		  date: Date("2025-02-06"),
+		  tags: ["tag_1", "tag_2", "tag_3"],
+		  attribute_1: "value_1",
+		  attribute_2: "value_2",
+		  attribute_3: "value_3",
+		  attribute_4: "value_4",
+		  attribute_5: "value_5",
+		  attribute_6: "value_6",
+		  attribute_7: "value_7",
+		  attribute_8: "value_8",
+		  attribute_9: "value_9",
+		)
 	RUBY
 end
