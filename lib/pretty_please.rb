@@ -6,8 +6,8 @@ require "dispersion"
 module PrettyPlease
 	autoload :Prettifier, "pretty_please/prettifier"
 
-	def self.print(object)
-		puts Dispersion.ansi(prettify(object))
+	def self.print(...)
+		puts Dispersion.ansi(prettify(...))
 	end
 
 	def self.inspect(...)
