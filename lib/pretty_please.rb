@@ -7,7 +7,7 @@ module PrettyPlease
 	autoload :Prettifier, "pretty_please/prettifier"
 
 	def self.print(object)
-		puts Dispersion.ansi(inspect(object))
+		puts Dispersion.ansi(prettify(object))
 	end
 
 	def self.inspect(...)
