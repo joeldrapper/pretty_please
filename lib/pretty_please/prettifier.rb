@@ -155,6 +155,7 @@ class PrettyPlease::Prettifier
 	def indent
 		@indent += 1
 		value = yield
+	ensure
 		@indent -= 1
 		value
 	end
