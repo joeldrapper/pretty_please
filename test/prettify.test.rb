@@ -434,3 +434,23 @@ test "ActiveRecord::Base Model" do
 		)
 	RUBY
 end
+
+test "Queue" do
+	if RUBY_ENGINE == "truffleruby"
+		assert_equal_ruby prettify(Queue.new), "Queue(size: 0)"
+		assert_equal_ruby prettify(Queue.new.push(1)), "Queue(size: 1)"
+	else
+		assert_equal_ruby prettify(Queue.new), "Thread::Queue(size: 0)"
+		assert_equal_ruby prettify(Queue.new.push(1)), "Thread::Queue(size: 1)"
+	end
+end
+
+test "SizedQueue" do
+	if RUBY_ENGINE == "truffleruby"
+		assert_equal_ruby prettify(SizedQueue.new(10)), "SizedQueue(size: 0, max: 10)"
+		assert_equal_ruby prettify(SizedQueue.new(10).push(1)), "SizedQueue(size: 1, max: 10)"
+	else
+		assert_equal_ruby prettify(SizedQueue.new(10)), "Thread::SizedQueue(size: 0, max: 10)"
+		assert_equal_ruby prettify(SizedQueue.new(10).push(1)), "Thread::SizedQueue(size: 1, max: 10)"
+	end
+end
