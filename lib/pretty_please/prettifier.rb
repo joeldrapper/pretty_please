@@ -52,9 +52,9 @@ class PrettyPlease::Prettifier
 			when File, defined?(Pathname) && Pathname
 				push %(#{object.class.name}("#{object.to_path}"))
 			when SizedQueue
-				push %(#{object.class.name}(#{object.length}/#{object.max}))
+				push %(#{object.class.name}(size: #{object.size}, max: #{object.max}))
 			when Queue
-				push %(#{object.class.name}(#{object.length}))
+				push %(#{object.class.name}(size: #{object.size}))
 			when MatchData, (defined?(Date) && Date), (defined?(DateTime) && DateTime), (defined?(Time) && Time), (defined?(URI) && URI)
 				push %(#{object.class.name}("#{object}"))
 			when Array
