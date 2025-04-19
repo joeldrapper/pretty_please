@@ -116,7 +116,7 @@ class PrettyPlease::Prettifier
 
 		@running_depth += 1
 
-		return unless object.any?
+		return unless object.size > 0
 
 		length = 0
 		length += around_inline.bytesize * 2 if around_inline

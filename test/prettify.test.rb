@@ -241,6 +241,12 @@ test "long arrays" do
 	RUBY
 end
 
+test "array of nils" do
+	assert_equal_ruby prettify([nil, nil]), <<~RUBY.chomp
+		[nil, nil]
+	RUBY
+end
+
 test "module and class" do
 	assert_equal_ruby prettify([Difftastic, Integer]), <<~RUBY.chomp
 		[Difftastic, Integer]
